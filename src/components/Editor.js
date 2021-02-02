@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid';
 import * as fs from '../helpers/fs';
 import { COLOR, SIZE } from '../constants';
 
-const Editor = ({ stopEditing, fileName }) => {
+const Editor = ({ stopEditing, fileName, external }) => {
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
   useEffect(() => {
@@ -16,8 +16,8 @@ const Editor = ({ stopEditing, fileName }) => {
         // TODO: check name collision
         setName(newName);
       } else {
-        await fs.init();
-        const content = await fs.readFile(fileName);
+        await fs.init(external);
+        const content = await fs.readFile(fileName, external);
         setContent(content);
         setName(fileName);
       }
@@ -26,8 +26,8 @@ const Editor = ({ stopEditing, fileName }) => {
 
   const onPressClose = () => stopEditing();
   const onPressSave = async () => {
-    if (fileName) await fs.updateFile(fileName, name, content)
-    else await fs.createFile(name, content)
+    if (fileName) await fs.updateFile(fileName, name, content, external)
+    else await fs.createFile(name, content, external)
     stopEditing();
   };
 

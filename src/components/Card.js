@@ -4,13 +4,13 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import * as fs from '../helpers/fs';
 import { COLOR, SIZE, SHADOW } from '../constants';
 
-const Card = ({ file, startEditing, setFileDeleted }) => {
+const Card = ({ file, startEditing, setFileDeleted, external }) => {
   const [visible, setVisible] = useState(false);
   const onPress = () => startEditing(file.name);
   const onLongPress = () => setVisible(true);
   const onCancel = () => setVisible(false);
   const onDelete = async () => {
-    await fs.deleteFile(file.name);
+    await fs.deleteFile(file.name, external);
     setFileDeleted(file.name);
     setVisible(false);
   };
